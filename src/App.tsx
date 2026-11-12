@@ -12,7 +12,6 @@ import { Process } from './components/Process';
 import ClickSpark from './components/reactbits/ClickSpark';
 import { Services } from './components/Services';
 import { SmoothScrollProvider } from './components/SmoothScrollProvider';
-import { StudioRibbon } from './components/StudioRibbon';
 import { Work } from './components/Work';
 
 export default function App() {
@@ -40,7 +39,6 @@ export default function App() {
 
           <main className="relative z-10">
             <Hero />
-            <StudioRibbon />
             <Work />
             <Founders />
             <Services />
