@@ -1,6 +1,6 @@
-/** Central content model for the VELTRIX DIGITAL site. */
+/** Central content model for the studio site. */
 
-export type ProjectCategory = 'saas' | 'ecommerce' | 'local';
+export type ProjectCategory = 'web' | 'ecommerce' | 'growth';
 
 export interface Project {
   id: string;
@@ -10,7 +10,7 @@ export interface Project {
   year: string;
   summary: string;
   stack: string[];
-  result: string;
+  tag: string;
   mock: 'dashboard' | 'commerce' | 'landing';
   from: string;
   to: string;
@@ -18,92 +18,92 @@ export interface Project {
 
 export const CATEGORY_TABS = [
   { id: 'all', label: 'All' },
-  { id: 'saas', label: 'SaaS & Web Apps' },
-  { id: 'ecommerce', label: 'E-Commerce & Brands' },
-  { id: 'local', label: 'Local & High-Ticket Services' },
+  { id: 'web', label: 'Web Apps & SaaS' },
+  { id: 'ecommerce', label: 'Storefronts' },
+  { id: 'growth', label: 'Lead & Brand Sites' },
 ] as const;
 
 export const PROJECTS: Project[] = [
   {
-    id: 'nimbus',
-    title: 'Nimbus Analytics',
-    category: 'saas',
-    categoryLabel: 'SaaS Platform',
+    id: 'pulseboard',
+    title: 'Pulseboard Workspace',
+    category: 'web',
+    categoryLabel: 'Web App Concept',
     year: '2026',
     summary:
-      'Realtime product-analytics suite with streaming dashboards, seat-based billing and a sub-second query engine.',
-    stack: ['Next.js', 'TypeScript', 'PostgreSQL', 'Framer Motion'],
-    result: '+240% organic traffic',
+      'Operations dashboard concept combining live order tracking, team permissions, and clean reporting in one fast React interface.',
+    stack: ['React', 'TypeScript', 'PostgreSQL', 'Tailwind CSS'],
+    tag: 'Full-Stack Build',
     mock: 'dashboard',
     from: '#147D7C',
     to: '#6FB5B3',
   },
   {
-    id: 'aurelia',
-    title: 'Aurelia Atelier',
+    id: 'kora-studio',
+    title: 'Kora Goods Storefront',
     category: 'ecommerce',
-    categoryLabel: 'Luxury E-Commerce',
-    year: '2025',
+    categoryLabel: 'E-Commerce Concept',
+    year: '2026',
     summary:
-      'Headless storefront for a couture house — cinematic product reveals, 3D lookbook and one-tap checkout.',
-    stack: ['Shopify Hydrogen', 'Tailwind CSS', 'GSAP', 'Sanity'],
-    result: '+168% conversion rate',
+      'Minimal product storefront built for mobile shoppers with fast variant switching, clean cart drawer, and distraction-free checkout.',
+    stack: ['Next.js', 'Stripe', 'Tailwind CSS', 'Motion'],
+    tag: 'Mobile-First Shop',
     mock: 'commerce',
     from: '#FF6B4A',
     to: '#FF9E7A',
   },
   {
-    id: 'sterling',
-    title: 'Sterling & Co. Realty',
-    category: 'local',
-    categoryLabel: 'High-Ticket Local',
-    year: '2025',
+    id: 'verve-clinic',
+    title: 'Dental & Clinic Lead Funnel',
+    category: 'growth',
+    categoryLabel: 'Local Business',
+    year: '2026',
     summary:
-      'Lead engine for a luxury brokerage — neighbourhood landing pages, schema-rich listings and instant valuation funnels.',
-    stack: ['Astro', 'TypeScript', 'Schema.org', 'GA4'],
-    result: 'Rank #1 — “luxury realtor austin”',
+      'High-trust clinic landing system pairing local search pages, instant appointment booking, and social ad landing flows.',
+    stack: ['React', 'Local SEO', 'Schema Markup', 'Meta Ads'],
+    tag: 'Web + Lead Gen',
     mock: 'landing',
     from: '#0F3D3E',
     to: '#2C6E6D',
   },
   {
-    id: 'fluxboard',
-    title: 'Fluxboard',
-    category: 'saas',
-    categoryLabel: 'B2B SaaS',
-    year: '2024',
+    id: 'trackdesk',
+    title: 'TrackDesk Client Portal',
+    category: 'web',
+    categoryLabel: 'B2B Web App',
+    year: '2025',
     summary:
-      'Ops-command dashboard unifying six data sources into one reactive canvas with drag-and-drop reporting.',
-    stack: ['React', 'Vite', 'Tailwind CSS', 'WebSocket'],
-    result: '0.4s first contentful paint',
+      'Client portal for agencies and service teams to share project milestones, invoices, and deliverables without messy email threads.',
+    stack: ['TypeScript', 'Node.js', 'REST API', 'Tailwind CSS'],
+    tag: 'Client Portal',
     mock: 'dashboard',
     from: '#FF8A5C',
     to: '#FF6B4A',
   },
   {
-    id: 'marrow',
-    title: 'Marrow Coffee Roasters',
+    id: 'roast-club',
+    title: 'Roast Club D2C',
     category: 'ecommerce',
-    categoryLabel: 'DTC Brand',
+    categoryLabel: 'D2C Brand',
     year: '2025',
     summary:
-      'Direct-to-consumer storefront with subscription flows, brew-guides and a flavour-profile recommender.',
-    stack: ['Next.js', 'Stripe', 'Sanity', 'Framer Motion'],
-    result: '2.1× average order value',
+      'Subscription-ready D2C storefront paired with Instagram reel landing pages and automated WhatsApp follow-up flows.',
+    stack: ['Next.js', 'Payments', 'Meta Pixel', 'Motion'],
+    tag: 'D2C + Socials',
     mock: 'commerce',
     from: '#2C6E6D',
     to: '#FF8A5C',
   },
   {
-    id: 'apex',
-    title: 'Apex Dental Studio',
-    category: 'local',
-    categoryLabel: 'Local Practice',
-    year: '2024',
+    id: 'urban-fit',
+    title: 'Creator & Fitness Brand Hub',
+    category: 'growth',
+    categoryLabel: 'Brand & Social Funnel',
+    year: '2025',
     summary:
-      'Trust-first practice site with online booking, insurance checker and location SEO for three clinics.',
-    stack: ['Next.js', 'Tailwind CSS', 'OpenGraph', 'GSC'],
-    result: '+92% booked calls',
+      'Link-in-bio hub, lead magnet funnel, and booking calendar built to convert Instagram and YouTube traffic into paying clients.',
+    stack: ['React', 'Analytics', 'Social Funnel', 'CRM'],
+    tag: 'Social Growth',
     mock: 'landing',
     from: '#147D7C',
     to: '#FF6B4A',
@@ -112,6 +112,8 @@ export const PROJECTS: Project[] = [
 
 export interface Service {
   id: string;
+  owner: 'Agnish' | 'Ayush';
+  track: string;
   index: string;
   title: string;
   body: string;
@@ -121,31 +123,39 @@ export interface Service {
 export const SERVICES: Service[] = [
   {
     id: 'apps',
+    owner: 'Agnish',
+    track: 'Web Development',
     index: '01',
-    title: 'Custom Web Applications',
-    body: 'Ultra-responsive, dynamic interfaces engineered with zero bloated code — every interaction deliberate, every millisecond accounted for.',
-    points: ['Reactive UI frameworks', 'Scalable data layers', 'Sub-second budgets'],
-  },
-  {
-    id: 'portals',
-    index: '02',
-    title: 'High-Conversion Business Portals',
-    body: 'Tailor-made for local giants, service businesses and personal brands that need instant trust and airtight lead capture.',
-    points: ['Trust-first layouts', 'Lead-capture funnels', 'Instant-load portals'],
+    title: 'Custom Websites & Web Apps',
+    body: 'Responsive sites, dashboards, and full-stack web applications written cleanly from scratch for speed and reliability.',
+    points: ['React, Next.js & TypeScript', 'Backend APIs & databases', 'Mobile-first UI & motion'],
   },
   {
     id: 'seo',
-    index: '03',
-    title: 'Google Domination & Technical SEO',
-    body: 'Schema markup injection, semantic HTML5, localized SEO structures and dynamic OpenGraph tagging engineered to hit Google Page 1.',
-    points: ['JSON-LD schema', 'Local SEO silos', 'Dynamic OG tagging'],
+    owner: 'Agnish',
+    track: 'Performance & SEO',
+    index: '02',
+    title: 'Speed, Hosting & Technical SEO',
+    body: 'Clean semantic structure, metadata, fast load times, and reliable deployment so search engines index your site properly.',
+    points: ['Core Web Vitals tuning', 'Structured schema & OG tags', 'Cloud deployment & domains'],
   },
   {
-    id: 'motion',
+    id: 'marketing',
+    owner: 'Ayush',
+    track: 'Marketing & Socials',
+    index: '03',
+    title: 'Social Media & Brand Positioning',
+    body: 'Content direction, social media presence, and messaging that builds real trust with your target audience.',
+    points: ['Instagram & LinkedIn growth', 'Content & reel hooks', 'Brand voice & creatives'],
+  },
+  {
+    id: 'sales',
+    owner: 'Ayush',
+    track: 'Sales & Leads',
     index: '04',
-    title: 'Interactive 3D & Micro-Experience Design',
-    body: 'Spring-physics motion and immersive micro-experiences that keep bounce rates near zero — without sacrificing mobile performance.',
-    points: ['Spring-physics motion', 'Scroll choreography', 'Mobile-safe 3D'],
+    title: 'Lead Generation & Sales Funnels',
+    body: 'Turning website visitors and social traffic into qualified inquiries through outbound, ad funnels, and follow-up systems.',
+    points: ['Lead capture & CRM routing', 'Outbound & cold outreach', 'Conversion copy & offers'],
   },
 ];
 
@@ -158,84 +168,32 @@ export interface ProcessStep {
 export const PROCESS: ProcessStep[] = [
   {
     index: '01',
-    title: 'Discovery & Keyword Architecture',
-    body: 'Deep competitor audits and search-intent mapping. We chart exactly what your buyers type into Google before a single pixel is drawn.',
+    title: 'Goal & Offer Alignment',
+    body: 'We talk through what you sell, who your buyers are, and what the website or campaign needs to achieve first.',
   },
   {
     index: '02',
-    title: 'High-Fidelity Interactive Prototype',
-    body: 'Interactive design iterations approved by you — real motion, real states, real device testing before production begins.',
+    title: 'Design & Funnel Structure',
+    body: 'We map out the pages, messaging, and user journey so every button and section pushes visitors toward an inquiry.',
   },
   {
     index: '03',
-    title: 'Clean-Code Production',
-    body: 'Handcrafted, modular code optimized for Core Web Vitals. No page-builder bloat, no plugin roulette, no technical debt handed to you.',
+    title: 'Development & Creative Build',
+    body: 'Agnish builds the frontend, backend, and SEO setup while Ayush prepares the launch copy, creatives, and lead tracking.',
   },
   {
     index: '04',
-    title: 'Launch, Index & Scale',
-    body: 'Full Google Search Console verification, sitemap indexing, analytics deployment and a scaling roadmap for the quarters ahead.',
+    title: 'Launch & Traffic Push',
+    body: 'We ship to production, verify indexing and analytics, and kick off social or outreach campaigns to bring in leads.',
   },
-];
-
-export interface Testimonial {
-  quote: string;
-  name: string;
-  role: string;
-  company: string;
-  metric: string;
-}
-
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    quote:
-      'Veltrix rebuilt our platform in six weeks. Organic traffic is up 240% and the dashboard finally feels instant. They operate like a product team, not a vendor.',
-    name: 'Elena Marsh',
-    role: 'CEO',
-    company: 'Nimbus Analytics',
-    metric: '+240% organic traffic',
-  },
-  {
-    quote:
-      'The storefront is cinema. Conversion nearly tripled and customers literally email us about the website. Worth every cent — twice.',
-    name: 'Céleste Duarte',
-    role: 'Founder',
-    company: 'Aurelia Atelier',
-    metric: '+168% conversion',
-  },
-  {
-    quote:
-      'We went from page four to the number-one spot for our money keyword. High-ticket clients now call us instead of the other way around.',
-    name: 'James Sterling',
-    role: 'Managing Partner',
-    company: 'Sterling & Co. Realty',
-    metric: 'Rank #1 money keyword',
-  },
-  {
-    quote:
-      'Our booking calls rose 92% in the first quarter. The site loads instantly, ranks locally, and patients compliment it weekly.',
-    name: 'Dr. Priya Nandakumar',
-    role: 'Clinical Director',
-    company: 'Apex Dental Studio',
-    metric: '+92% booked calls',
-  },
-];
-
-export const COMPARISON_ROWS: Array<[string, string, string, string]> = [
-  ['Median load time', '< 0.6 s', '2 – 4 s', '3 s +'],
-  ['Codebase', '100% bespoke, handcrafted', 'Hybrid, plugin-heavy', 'Purchased theme'],
-  ['SEO architecture', 'Engineered-in, schema-native', 'Paid add-on retainer', 'Plugin roulette'],
-  ['Motion & interaction', 'Spring-physics systems', 'Rarely considered', 'Stock transitions'],
-  ['Platform lock-in', 'None — you own everything', 'CMS retainers', 'Monthly subscription'],
-  ['Post-launch', 'Roadmap, indexing & scaling', 'Ticket queue', 'You’re on your own'],
 ];
 
 export const NAV_LINKS = [
   { label: 'Work', href: '#work' },
-  { label: 'Services', href: '#services' },
-  { label: 'Pricing', href: '#pricing' },
   { label: 'Founders', href: '#founders' },
+  { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
+  { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
 ] as const;
 
@@ -252,48 +210,47 @@ export interface Plan {
 
 export const PLANS: Plan[] = [
   {
-    id: 'sprint',
-    name: 'Sprint',
-    tagline: 'For focused launches',
-    price: '$4.5k',
-    period: 'fixed · 2–3 weeks',
+    id: 'starter',
+    name: 'Launch Site',
+    tagline: 'For personal brands & local businesses',
+    price: 'Custom',
+    period: '1–2 week turnaround',
     features: [
-      'High-conversion landing site',
-      'Copy polish & page structure',
-      'Core technical SEO + schema',
-      'Interactive micro-motion pack',
-      '2 structured revision rounds',
+      'Custom responsive landing page',
+      'Mobile-first layout & smooth UI',
+      'Basic technical SEO & analytics',
+      'Lead form & WhatsApp / email routing',
+      'Full source code ownership',
     ],
   },
   {
-    id: 'signature',
-    name: 'Signature',
-    tagline: 'Our flagship engagement',
-    price: '$12k',
-    period: 'fixed · 4–6 weeks',
+    id: 'growth',
+    name: 'Website + Growth',
+    tagline: 'Our complete build & lead package',
+    price: 'Custom',
+    period: '3–5 week turnaround',
     features: [
-      'Fully bespoke multi-page website',
-      'Spring-physics motion systems',
-      'Technical SEO + GSC indexing setup',
-      'CMS or headless stack, your choice',
-      'Priority support channel',
-      '30-day post-launch care',
+      'Multi-page website or web app',
+      'Custom backend, CMS or booking flow',
+      'Offer positioning & conversion copy',
+      'Social media & lead-gen launch plan',
+      'Deployment, domain & 30-day support',
     ],
     featured: true,
-    badge: 'Most popular',
+    badge: 'Most requested',
   },
   {
-    id: 'partner',
-    name: 'Partner',
-    tagline: 'For scaling teams',
-    price: 'Custom',
-    period: 'monthly retainer',
+    id: 'retainer',
+    name: 'Growth Retainer',
+    tagline: 'Ongoing dev, socials & sales pipeline',
+    price: 'Monthly',
+    period: 'Flexible monthly scope',
     features: [
-      'Dedicated product pod',
-      'Continuous A/B & SEO iteration',
-      'Quarterly strategy audits',
-      'Same-day response SLA',
-      'Roadmap & analytics reviews',
+      'Social media management & creatives',
+      'Lead generation & outreach support',
+      'New landing pages & site updates',
+      'Monthly performance review',
+      'Direct WhatsApp / Slack access',
     ],
   },
 ];
@@ -305,29 +262,25 @@ export interface FaqEntry {
 
 export const FAQS: FaqEntry[] = [
   {
-    q: 'How fast can we launch?',
-    a: 'Sprint engagements ship in 2–3 weeks; Signature builds run 4–6 weeks. Every fixed quote comes with an exact milestone calendar — dates, not estimates.',
+    q: 'How do the two of you split the work?',
+    a: 'Agnish handles all web design, frontend/backend development, hosting, and technical SEO. Ayush handles marketing strategy, social media, lead generation, and sales.',
   },
   {
-    q: 'Do you work with businesses outside tech?',
-    a: 'Yes — local services, e-commerce, real estate, healthcare and hospitality. Each VELTRIX DIGITAL build is tailored to how your industry actually searches and buys.',
+    q: 'Can we hire you just for a website, or just for marketing?',
+    a: 'Yes. Some clients only need a fast custom site or web app built, while others want the site paired with social media and lead generation.',
   },
   {
-    q: 'What makes you different from template builders?',
-    a: 'Every line of code is handcrafted for your business: engineered SEO architecture, spring-physics motion, zero plugin debt — and you own the entire codebase on day one.',
+    q: 'How long does a typical build take?',
+    a: 'A focused landing page usually ships in 1 to 2 weeks. Larger multi-page websites or custom web apps take 3 to 5 weeks depending on features.',
   },
   {
-    q: 'Will the site actually rank on Google?',
-    a: 'Ranking is engineered in, not bolted on: semantic HTML5, JSON-LD schema, Core Web Vitals budgets and Google Search Console indexing are part of our 4-step protocol.',
+    q: 'Do I own the website code after launch?',
+    a: 'Yes, 100%. You get the full GitHub repository, deployed site, and all design/content assets with no lock-in.',
   },
   {
-    q: 'Who owns the code and design?',
-    a: 'You do — completely. Full repository, design files and analytics handover. No platform lock-in, no proprietary page builders, no hostage situations.',
-  },
-  {
-    q: 'Do you offer support after launch?',
-    a: 'Every engagement includes 30 days of post-launch care. For continuous iteration, the Partner plan gives you a dedicated pod with a same-day response SLA.',
+    q: 'What do you need from me to get started?',
+    a: 'Just fill out the scope form below or book a call. Bring your business details, goals, and any reference sites you like—we handle the rest.',
   },
 ];
 
-export const CONTACT_EMAIL = 'hello@veltrix.digital';
+export const CONTACT_EMAIL = 'agnighosh207@gmail.com';

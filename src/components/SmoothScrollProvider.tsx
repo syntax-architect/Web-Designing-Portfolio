@@ -21,7 +21,8 @@ export function useScrollTo() {
   return (target: string | number) => {
     if (lenis) {
       lenis.scrollTo(target, {
-        duration: 1.4,
+        offset: typeof target === 'string' ? -76 : 0,
+        duration: 1.35,
         easing: (t: number) => 1 - Math.pow(1 - t, 4),
       });
       return;
@@ -48,8 +49,9 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     }
 
     const instance = new Lenis({
-      lerp: 0.08,
+      lerp: 0.085,
       smoothWheel: true,
+      touchMultiplier: 1.5,
     });
 
     instance.on('scroll', () => ScrollTrigger.update());

@@ -3,16 +3,25 @@ import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { CONTACT_EMAIL, NAV_LINKS, SERVICES } from '../lib/data';
 import { useBooking } from './BookingModal';
+import { ShimmerButton } from './magicui/shimmer-button';
 import { useScrollTo } from './SmoothScrollProvider';
-import { DribbbleIcon, GithubIcon, LinkedinIcon, XIcon } from './SocialIcons';
+import { GithubIcon, LinkedinIcon, XIcon } from './SocialIcons';
 
-function UtcClock() {
-  const [time, setTime] = useState('--:--:--');
+function StudioClock() {
+  const [time, setTime] = useState('--:--');
 
   useEffect(() => {
-    const tick = () => setTime(new Date().toISOString().slice(11, 19));
+    const tick = () =>
+      setTime(
+        new Date().toLocaleTimeString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        }),
+      );
     tick();
-    const id = window.setInterval(tick, 1000);
+    const id = window.setInterval(tick, 15000);
     return () => window.clearInterval(id);
   }, []);
 
@@ -23,17 +32,15 @@ function UtcClock() {
         <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
       </span>
       <span className="tabular-nums">{time}</span>
-      <span className="text-white/50">UTC</span>
-      <span className="hidden text-white/40 sm:inline">— studio time</span>
+      <span className="text-white/50">IST</span>
     </span>
   );
 }
 
 const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com', Icon: GithubIcon },
+  { label: 'GitHub', href: 'https://github.com/syntax-architect', Icon: GithubIcon },
   { label: 'LinkedIn', href: 'https://linkedin.com', Icon: LinkedinIcon },
   { label: 'X (Twitter)', href: 'https://x.com', Icon: XIcon },
-  { label: 'Dribbble', href: 'https://dribbble.com', Icon: DribbbleIcon },
 ];
 
 export function Footer() {
@@ -58,17 +65,22 @@ export function Footer() {
               Ready when you are
             </p>
             <h2 className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl">
-              Let’s engineer your <span className="text-gradient">revenue engine</span>.
+              Have a project in mind? <span className="text-gradient">Let’s talk</span>.
             </h2>
           </div>
-          <button
+          <ShimmerButton
             type="button"
             onClick={open}
-            className="group inline-flex items-center gap-2.5 rounded-full bg-accent px-8 py-4 font-display text-sm font-semibold text-white transition-all duration-300 hover:bg-white hover:text-ink"
+            background="#ff6b4a"
+            shimmerColor="#fff7ed"
+            shimmerSize="0.08em"
+            shimmerDuration="2.8s"
+            borderRadius="9999px"
+            className="group inline-flex items-center gap-2.5 border-white/20 px-8 py-4 font-display text-sm font-semibold text-white shadow-lift transition-transform duration-300 hover:scale-[1.02]"
           >
             Book a Strategy Call
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </button>
+          </ShimmerButton>
         </div>
 
         {/* Semantic sitemap */}
@@ -169,9 +181,9 @@ export function Footer() {
               <li>Accessibility — WCAG 2.2 AA target</li>
             </ul>
             <p className="mt-6 text-[12px] leading-relaxed text-white/45">
-              VELTRIX DIGITAL LLC
+              VELTRIX DIGITAL
               <br />
-              Remote-first · Serving worldwide
+              Built by Agnish &amp; Ayush · India &amp; Remote
             </p>
           </div>
         </nav>
@@ -192,9 +204,9 @@ export function Footer() {
         {/* Base line */}
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-7 md:flex-row md:items-center">
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/50">
-            © {year} VELTRIX DIGITAL — All rights reserved
+            © {year} VELTRIX DIGITAL · All rights reserved
           </p>
-          <UtcClock />
+          <StudioClock />
           <button
             type="button"
             onClick={() => scrollTo(0)}

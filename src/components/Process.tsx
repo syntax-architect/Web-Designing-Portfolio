@@ -67,17 +67,17 @@ export function Process() {
         <SectionHeading
           id="process-title"
           dark
-          eyebrow="The 4-Step Engineering Protocol"
+          eyebrow="How We Work"
           title={
             <>
-              From first call to <span className="text-gradient">first rank</span>.
+              From first call to <span className="text-gradient">live launch</span>.
             </>
           }
-          description="A transparent VELTRIX DIGITAL production pipeline — you always know exactly which stage your build is in and what happens next."
+          description="A straightforward four-step workflow so you always know what is being built and when it ships."
         />
 
-        <div ref={rootRef} className="mt-16">
-          <ol ref={listRef} className="relative ml-3 space-y-10 md:ml-6 md:space-y-12">
+        <div ref={rootRef} className="mt-12 md:mt-16">
+          <ol ref={listRef} className="relative ml-2 space-y-8 md:ml-6 md:space-y-12">
             {/* Rail */}
             <div aria-hidden="true" className="absolute bottom-6 left-0 top-2 w-px bg-white/15">
               <div
@@ -90,11 +90,11 @@ export function Process() {
             {PROCESS.map((step, i) => (
               <motion.li
                 key={step.index}
-                initial={{ opacity: 0, x: -28 }}
+                initial={{ opacity: 0, x: -24 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={viewportOnce}
-                transition={{ duration: 0.8, ease: EASE, delay: i * 0.06 }}
-                className="relative pl-10 md:pl-14"
+                transition={{ duration: 0.75, ease: EASE, delay: i * 0.06 }}
+                className="relative pl-8 md:pl-14"
               >
                 {/* Node */}
                 <span
@@ -105,7 +105,7 @@ export function Process() {
                   <span className="h-[5px] w-[5px] rounded-full bg-white/30 transition-colors duration-500" />
                 </span>
 
-                <div className="group rounded-2xl border border-transparent px-4 py-3 transition-all duration-500 hover:border-white/10 hover:bg-white/5 md:flex md:items-baseline md:gap-8 md:px-6">
+                <div className="group rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 transition-all duration-500 hover:border-white/20 hover:bg-white/[0.07] md:flex md:items-baseline md:gap-8 md:px-6 md:py-5">
                   <span className="shrink-0 font-mono text-sm font-medium text-accent">
                     {step.index}
                   </span>

@@ -36,6 +36,7 @@ export function Tilt({ children, className, max = 7 }: TiltProps) {
   );
 
   const handleMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(hover: none)').matches) return;
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
     px.set((event.clientX - rect.left) / rect.width);
@@ -59,7 +60,7 @@ export function Tilt({ children, className, max = 7 }: TiltProps) {
         {children}
         <motion.div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 hidden rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block"
           style={{ background: glare }}
         />
       </motion.div>

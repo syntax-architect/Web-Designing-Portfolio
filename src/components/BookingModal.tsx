@@ -16,6 +16,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { CONTACT_EMAIL } from '../lib/data';
 import { EASE } from '../lib/motion';
 import { useLenis } from './SmoothScrollProvider';
 
@@ -27,8 +28,8 @@ export function useBooking() {
   return ctx;
 }
 
-const TIME_SLOTS = ['10:00', '12:00', '15:00', '17:30'];
-const TOPICS = ['New project', 'Redesign & rebuild', 'SEO audit', 'Partnership'] as const;
+const TIME_SLOTS = ['11:00 AM', '2:00 PM', '5:00 PM', '7:30 PM'];
+const TOPICS = ['New website', 'Web app / SaaS', 'Marketing & socials', 'Full build + growth'] as const;
 
 function nextBusinessDays(count: number): Date[] {
   const days: Date[] = [];
@@ -80,14 +81,31 @@ function Modal({ onClose }: { onClose: () => void }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
+  const picked = dayIdx !== null ? dayNames[dayIdx] : null;
+
+  const buildBookingMailto = () => {
+    const slotText = picked ? `${picked.weekday} ${picked.day} ${picked.month}, ${time} IST` : '';
+    const subject = encodeURIComponent(`Intro Call Request (${slotText}) — ${name.trim()}`);
+    const body = encodeURIComponent(
+      [
+        `Name: ${name.trim()}`,
+        `Email: ${email.trim()}`,
+        `Preferred Slot: ${slotText}`,
+        topic ? `Topic: ${topic}` : null,
+      ]
+        .filter(Boolean)
+        .join('\n'),
+    );
+    return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  };
+
   const confirm = () => {
     if (!name.trim()) return setError('Please add your name.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError('That email doesn’t look valid.');
     setError('');
     setStep('done');
+    window.location.href = buildBookingMailto();
   };
-
-  const picked = dayIdx !== null ? dayNames[dayIdx] : null;
 
   return (
     <motion.div
@@ -181,7 +199,7 @@ function Modal({ onClose }: { onClose: () => void }) {
               </div>
 
               <p className="mt-6 text-[12px] font-semibold text-ink/80">
-                <span className="mr-1.5 text-accent">Step 2</span>· Time (UTC)
+                <span className="mr-1.5 text-accent">Step 2</span>· Time (IST)
               </p>
               <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {TIME_SLOTS.map((t) => (
@@ -215,7 +233,7 @@ function Modal({ onClose }: { onClose: () => void }) {
           {step === 'details' && (
             <div>
               <div className="rounded-xl border border-tintline bg-tint/60 px-4 py-3 text-sm font-semibold text-ink">
-                {picked?.weekday} {picked?.day} {picked?.month} · {time} UTC
+                {picked?.weekday} {picked?.day} {picked?.month} · {time} IST
               </div>
 
               <p className="mt-5 text-[12px] font-semibold text-ink/80">What’s this about?</p>
@@ -241,9 +259,9 @@ function Modal({ onClose }: { onClose: () => void }) {
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Ada Lovelace"
+                    placeholder="Rohan Sharma"
                     autoComplete="name"
-                    className="mt-1.5 w-full rounded-xl border border-hairline bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10"
+                    className="mt-1.5 w-full rounded-xl border border-hairline bg-white px-4 py-3 text-base text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10 sm:text-sm"
                   />
                 </label>
                 <label className="block">
@@ -252,9 +270,9 @@ function Modal({ onClose }: { onClose: () => void }) {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="ada@company.com"
+                    placeholder="rohan@company.com"
                     autoComplete="email"
-                    className="mt-1.5 w-full rounded-xl border border-hairline bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10"
+                    className="mt-1.5 w-full rounded-xl border border-hairline bg-white px-4 py-3 text-base text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10 sm:text-sm"
                   />
                 </label>
               </div>
@@ -266,7 +284,7 @@ function Modal({ onClose }: { onClose: () => void }) {
                 onClick={confirm}
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 font-display text-sm font-semibold text-white transition-all duration-300 hover:bg-ink"
               >
-                Confirm booking
+                Confirm &amp; Open Email
                 <Check className="h-4 w-4" />
               </button>
             </div>
@@ -282,21 +300,29 @@ function Modal({ onClose }: { onClose: () => void }) {
                 <Check className="h-7 w-7" />
               </span>
               <h4 className="mt-5 font-display text-xl font-bold text-ink">
-                Slot reserved
-                {picked ? ` — ${picked.weekday} ${picked.day} ${picked.month}, ${time} UTC` : ''}
+                Request ready
+                {picked ? ` — ${picked.weekday} ${picked.day} ${picked.month}, ${time} IST` : ''}
               </h4>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted">
-                A calendar invite and a short pre-call brief are on their way to{' '}
-                <span className="font-medium text-ink">{email}</span>. Agnish or Ayush will join
-                you personally.
+                Send the pre-filled email to <span className="font-medium text-ink">{CONTACT_EMAIL}</span>{' '}
+                and Agnish or Ayush will confirm your Google Meet link.
               </p>
-              <button
-                type="button"
-                onClick={onClose}
-                className="mt-6 rounded-full border border-hairline bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink/25"
-              >
-                Back to site
-              </button>
+              <div className="mt-6 flex flex-col justify-center gap-2.5 sm:flex-row">
+                <a
+                  href={buildBookingMailto()}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-ink"
+                >
+                  Open Email Draft
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="rounded-full border border-hairline bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink/25"
+                >
+                  Back to site
+                </button>
+              </div>
             </motion.div>
           )}
         </div>

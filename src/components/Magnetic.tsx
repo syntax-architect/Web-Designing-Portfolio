@@ -20,6 +20,7 @@ export function Magnetic({ children, strength = 0.32, className }: MagneticProps
   const springY = useSpring(y, { stiffness: 200, damping: 15, mass: 0.25 });
 
   const handleMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(hover: none)').matches) return;
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
     x.set((event.clientX - (rect.left + rect.width / 2)) * strength);

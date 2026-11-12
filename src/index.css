@@ -62,11 +62,68 @@
   --shadow-soft: 0 24px 80px -24px rgb(15 61 62 / 0.3);
 
   --animate-marquee: marquee 38s linear infinite;
+  --animate-float: float-slow 12s ease-in-out infinite;
+  --animate-float-reverse: float-reverse 15s ease-in-out infinite;
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+}
+
+@keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+  }
+}
+
+@keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+  }
+  15%,
+  35% {
+    transform: translateZ(0) rotate(90deg);
+  }
+  65%,
+  85% {
+    transform: translateZ(0) rotate(270deg);
+  }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+  }
 }
 
 @keyframes marquee {
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) scale(1.03);
+  }
+}
+
+@keyframes float-reverse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(16px, 14px, 0) scale(0.97);
+  }
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
@@ -77,14 +134,17 @@
   backdrop-filter: blur(var(--glass-blur)) saturate(150%);
 }
 
-/* Coral → peach gradient text (the highlight, used sparingly) */
+/* Coral → peach gradient text with subtle kinetic shimmer */
 @utility text-gradient {
   background-image: linear-gradient(
     100deg,
     var(--accent-coral) 0%,
-    var(--accent-coral-deep) 45%,
-    var(--accent-peach) 100%
+    var(--accent-coral-deep) 35%,
+    var(--accent-peach) 65%,
+    var(--accent-coral) 100%
   );
+  background-size: 200% auto;
+  animation: gradient-shift 7s ease-in-out infinite;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -101,17 +161,31 @@
   background-size: 44px 44px;
 }
 
+/* Tactile editorial paper grain (zero network request) */
+@utility bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
 @layer base {
   html {
     background-color: var(--bg-canvas);
+    overflow-x: clip;
     scrollbar-color: #cdc4ae var(--bg-soft);
     scrollbar-width: thin;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     @apply bg-canvas font-sans text-ink antialiased;
     overflow-x: clip;
     text-rendering: optimizeLegibility;
+  }
+
+  button,
+  a,
+  [role='button'],
+  [role='tab'] {
+    touch-action: manipulation;
   }
 
   ::selection {

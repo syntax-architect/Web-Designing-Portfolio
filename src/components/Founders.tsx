@@ -1,10 +1,13 @@
 import { motion } from 'motion/react';
 import { Code2, Quote, TrendingUp } from 'lucide-react';
+import type { CSSProperties } from 'react';
 import agnishImg from '../assets/agnish.png';
 import ayushImg from '../assets/ayush.png';
-import { GithubIcon, LinkedinIcon, XIcon } from './SocialIcons';
 import { fadeUp, stagger, viewportOnce } from '../lib/motion';
+import SplitText from './reactbits/SplitText';
+import SpotlightCard from './reactbits/SpotlightCard';
 import { SectionHeading, SectionShell } from './Section';
+import { GithubIcon, LinkedinIcon, XIcon } from './SocialIcons';
 
 interface FounderSocial {
   label: string;
@@ -46,7 +49,7 @@ const FOUNDERS: Founder[] = [
     glow: 'rgba(20, 125, 124, 0.22)',
     badgeIcon: 'code',
     socials: [
-      { label: 'Agnish on GitHub', href: 'https://github.com', icon: 'github' },
+      { label: 'Agnish on GitHub', href: 'https://github.com/syntax-architect', icon: 'github' },
       { label: 'Agnish on LinkedIn', href: 'https://linkedin.com', icon: 'linkedin' },
     ],
   },
@@ -94,11 +97,21 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
   const BadgeIcon = founder.badgeIcon === 'code' ? Code2 : TrendingUp;
 
   return (
-    <motion.article
-      variants={fadeUp}
-      custom={index}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-hairline bg-surface shadow-card transition-all duration-500 hover:-translate-y-1 hover:border-tintline hover:shadow-lift"
-    >
+    <motion.article variants={fadeUp} custom={index} className="h-full">
+      <SpotlightCard
+        theme="light"
+        spotlightColor={founder.accent}
+        intensity={0.14}
+        spotlightSize={270}
+        borderGlow={0.5}
+        className="group relative flex h-full flex-col rounded-3xl !p-0 transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
+        style={
+          {
+            '--spotlight-card-surface': '#ffffff',
+            '--spotlight-card-border': 'rgba(15, 61, 62, 0.1)',
+          } as CSSProperties
+        }
+      >
       {/* Soft hover corner glow */}
       <div
         aria-hidden="true"
@@ -107,15 +120,22 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
       />
 
       {/* Top header: 1:1 studio portrait + identity */}
-      <div className="relative flex flex-col gap-5 border-b border-hairline bg-soft/45 p-6 sm:flex-row sm:items-center md:p-7">
+      <div className="relative flex flex-col items-center gap-5 border-b border-hairline bg-soft/45 p-5 text-center sm:flex-row sm:items-center sm:p-6 sm:text-left md:p-7">
         {/* 1:1 deep-teal studio frame matching the portrait's cool/warm rim lighting */}
         <div
-          className="relative h-40 w-40 shrink-0 overflow-hidden rounded-2xl shadow-lift ring-1 ring-ink/15 sm:h-44 sm:w-44"
+          className="relative h-36 w-36 shrink-0 overflow-hidden rounded-2xl shadow-lift ring-1 ring-ink/15 sm:h-44 sm:w-44"
           style={{
             background:
               'radial-gradient(circle at 82% 24%, rgba(255, 107, 74, 0.28) 0%, transparent 52%), radial-gradient(circle at 18% 30%, rgba(20, 125, 124, 0.45) 0%, transparent 58%), linear-gradient(155deg, #072223 0%, #0F3D3E 58%, #145353 100%)',
           }}
         >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-75 transition-opacity duration-500 group-hover:opacity-100"
+            style={{
+              background: `radial-gradient(circle at 50% 42%, ${founder.glow} 0%, transparent 65%)`,
+            }}
+          />
           <img
             src={founder.image}
             alt={`${founder.name} — ${founder.role}`}
@@ -123,7 +143,7 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
             height={640}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            className="relative h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
           />
           <div
             aria-hidden="true"
@@ -137,7 +157,7 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
 
         {/* Name, role, badge & socials */}
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-between">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/85 shadow-[0_1px_2px_rgb(15_61_62/0.04)]">
               <BadgeIcon className="h-3.5 w-3.5" style={{ color: founder.accent }} aria-hidden="true" />
               {founder.roleTag}
@@ -147,12 +167,12 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
             </span>
           </div>
 
-          <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl">
+          <h3 className="mt-3.5 font-display text-2xl font-bold tracking-tight text-ink sm:mt-4 md:text-3xl">
             {founder.name}
           </h3>
           <p className="mt-1 text-[13px] font-medium leading-snug text-muted">{founder.role}</p>
 
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-4 flex items-center justify-center gap-2 sm:justify-start">
             {founder.socials.map((s) => (
               <SocialBadge key={s.label} social={s} />
             ))}
@@ -161,18 +181,20 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
       </div>
 
       {/* Bottom body: bio, full-width 2x2 focus grid & ownership footer */}
-      <div className="relative flex flex-1 flex-col justify-between p-6 md:p-7">
+      <div className="relative flex flex-1 flex-col justify-between p-5 sm:p-6 md:p-7">
         <div>
           <p className="text-sm leading-relaxed text-muted">{founder.bio}</p>
 
           <ul
-            className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2"
+            className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5"
             aria-label={`${founder.name}'s focus areas`}
           >
             {founder.focus.map((item) => (
-              <li
+              <motion.li
                 key={item}
-                className="flex items-center gap-2.5 rounded-xl border border-hairline bg-soft/75 px-3.5 py-2.5 text-xs font-medium text-ink/85"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center gap-2.5 rounded-xl border border-hairline bg-soft/75 px-3.5 py-2.5 text-xs font-medium text-ink/85 transition-colors hover:border-tintline hover:bg-surface"
               >
                 <span
                   aria-hidden="true"
@@ -180,7 +202,7 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
                   style={{ backgroundColor: founder.accent }}
                 />
                 <span>{item}</span>
-              </li>
+              </motion.li>
             ))}
           </ul>
         </div>
@@ -194,6 +216,7 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
           {founder.highlight}
         </div>
       </div>
+      </SpotlightCard>
     </motion.article>
   );
 }
@@ -203,13 +226,13 @@ export function Founders() {
     <SectionShell id="founders" labelledBy="founders-title">
       <SectionHeading
         id="founders-title"
-        eyebrow="The Founders"
+        eyebrow="The Team"
         title={
           <>
-            Two founders. <span className="text-gradient">Zero handoffs.</span>
+            Meet the people <span className="text-gradient">behind the work</span>.
           </>
         }
-        description="Engineering meets growth — Agnish builds the entire web platform from code to launch, while Ayush drives the marketing, social media, and lead pipeline."
+        description="You talk directly to the developer writing the code and the marketer running your growth. No account managers in the middle."
         align="center"
       />
 
@@ -225,20 +248,30 @@ export function Founders() {
         ))}
       </motion.div>
 
-      {/* Shared quote */}
+      {/* Shared note with GSAP SplitText word rise */}
       <motion.blockquote
-        initial={{ opacity: 0, y: 32 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={viewportOnce}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="relative mx-auto mt-10 max-w-4xl overflow-hidden rounded-3xl border border-tintline bg-gradient-to-br from-tint/80 via-surface to-soft p-10 text-center shadow-card"
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative mx-auto mt-10 max-w-4xl overflow-hidden rounded-3xl border border-tintline bg-gradient-to-br from-tint/80 via-surface to-soft p-8 text-center shadow-card sm:p-10"
       >
         <Quote className="mx-auto h-6 w-6 text-accent" aria-hidden="true" />
-        <p className="mt-5 font-display text-2xl font-semibold leading-snug tracking-tight text-ink md:text-3xl">
-          “We don’t build generic web templates; we engineer digital revenue engines.”
-        </p>
+        <SplitText
+          text="“A great website means nothing if nobody sees it. Good engineering and good marketing belong together.”"
+          tag="p"
+          splitType="words"
+          effect="rise"
+          mask
+          trigger="view"
+          rootMargin="-30px"
+          delay={28}
+          duration={0.85}
+          textAlign="center"
+          className="mt-4 block font-display text-xl font-semibold leading-snug tracking-tight text-ink sm:text-2xl md:text-3xl"
+        />
         <footer className="mt-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-muted">
-          — Agnish &amp; Ayush, Founders of VELTRIX DIGITAL
+          Agnish &amp; Ayush · VELTRIX DIGITAL
         </footer>
       </motion.blockquote>
     </SectionShell>

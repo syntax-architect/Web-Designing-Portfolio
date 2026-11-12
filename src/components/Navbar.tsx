@@ -1,10 +1,11 @@
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
-import { useState } from 'react';
-import { NAV_LINKS } from '../lib/data';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react';
+import { ArrowRight, Mail } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { CONTACT_EMAIL, NAV_LINKS } from '../lib/data';
 import { EASE } from '../lib/motion';
 import { useBooking } from './BookingModal';
 import { Magnetic } from './Magnetic';
+import { ScrollProgress } from './magicui/scroll-progress';
 import { useScrollTo } from './SmoothScrollProvider';
 
 /** Monogram: sharp geometric V on a deep-teal tile with coral accent. */
@@ -19,14 +20,37 @@ function Monogram() {
 }
 
 export function Navbar() {
-  const { scrollY, scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 26 });
+  const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState<string>('');
   const scrollTo = useScrollTo();
   const { open } = useBooking();
 
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 24));
+
+  useEffect(() => {
+    const ids = NAV_LINKS.map((l) => l.href.replace('#', ''));
+    const elements = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target.id) {
+          setActiveHref(`#${visible[0].target.id}`);
+        }
+      },
+      { rootMargin: '-32% 0px -52% 0px', threshold: [0.1, 0.35, 0.6] },
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const go = (href: string) => {
     setMenuOpen(false);
@@ -38,11 +62,10 @@ export function Navbar() {
       <motion.header
         initial={{ y: -72, opacity: 0 }}
         animate={{ y: 0, opacity: 1, transition: { duration: 0.8, ease: EASE, delay: 0.1 } }}
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-500 ${
-          scrolled
-            ? 'border-b border-hairline bg-glass shadow-[0_1px_0_rgba(16,24,40,0.02)]'
-            : 'border-b border-transparent'
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-500 ${scrolled
+          ? 'border-b border-hairline bg-glass shadow-[0_1px_0_rgba(16,24,40,0.02)]'
+          : 'border-b border-transparent'
+          }`}
       >
         <nav
           aria-label="Primary"
@@ -60,18 +83,31 @@ export function Navbar() {
             </span>
           </button>
 
-          <div className="hidden items-center gap-8 lg:flex">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link.href}
-                type="button"
-                onClick={() => go(link.href)}
-                className="group relative text-[13px] font-medium text-muted transition-colors duration-300 hover:text-ink"
-              >
-                {link.label}
-                <span className="absolute -bottom-1.5 left-0 h-0.5 w-0 rounded-full bg-accent transition-all duration-300 group-hover:w-full" />
-              </button>
-            ))}
+          <div className="hidden items-center gap-2 lg:flex">
+            {NAV_LINKS.map((link) => {
+              const active = activeHref === link.href;
+              return (
+                <button
+                  key={link.href}
+                  type="button"
+                  onClick={() => go(link.href)}
+                  className={`group relative rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors duration-300 ${active ? 'text-ink' : 'text-muted hover:text-ink'
+                    }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                      className="absolute inset-0 rounded-full border border-hairline bg-surface shadow-[0_1px_2px_rgb(15_61_62/0.05)]"
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    {active && <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />}
+                    {link.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-4">
@@ -95,25 +131,22 @@ export function Navbar() {
             >
               <span className="relative block h-3 w-4">
                 <span
-                  className={`absolute left-0 top-0 h-0.5 w-full rounded-full bg-ink transition-all duration-300 ${
-                    menuOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : ''
-                  }`}
+                  className={`absolute left-0 top-0 h-0.5 w-full rounded-full bg-ink transition-all duration-300 ${menuOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : ''
+                    }`}
                 />
                 <span
-                  className={`absolute bottom-0 left-0 h-0.5 w-full rounded-full bg-ink transition-all duration-300 ${
-                    menuOpen ? 'bottom-1/2 translate-y-1/2 -rotate-45' : ''
-                  }`}
+                  className={`absolute bottom-0 left-0 h-0.5 w-full rounded-full bg-ink transition-all duration-300 ${menuOpen ? 'bottom-1/2 translate-y-1/2 -rotate-45' : ''
+                    }`}
                 />
               </span>
             </button>
           </div>
         </nav>
 
-        {/* Scroll progress hairline */}
-        <motion.div
+        {/* Magic UI scroll progress hairline */}
+        <ScrollProgress
           aria-hidden="true"
-          style={{ scaleX: progress }}
-          className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-gradient-to-r from-accent via-peach to-teal"
+          className="absolute inset-x-0 bottom-0 top-auto h-0.5 bg-gradient-to-r from-accent via-peach to-teal"
         />
       </motion.header>
 
@@ -159,6 +192,16 @@ export function Navbar() {
               >
                 Book a Strategy Call
               </motion.button>
+
+              <motion.a
+                href={`mailto:${CONTACT_EMAIL}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { delay: 0.58, duration: 0.4 } }}
+                className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-hairline bg-surface py-3.5 text-sm font-medium text-ink"
+              >
+                <Mail className="h-4 w-4 text-accent" aria-hidden="true" />
+                {CONTACT_EMAIL}
+              </motion.a>
             </div>
           </motion.div>
         )}
