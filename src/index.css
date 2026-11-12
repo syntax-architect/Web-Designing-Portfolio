@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────
+   VELTRIX DIGITAL — "Ivory / Teal / Coral" 3-color system
+   Strict rule: two background neutrals (warm ivory canvas family,
+   deep teal ink & dark sections) + ONE highlight (coral orange)
+   reserved for CTAs, live signals and accent moments.
+   ───────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Neutral 1 — warm ivory background family */
+  --bg-canvas: #fbf7ef;
+  --bg-soft: #f5efe2;
+  --bg-surface: #fffdf8;
+  --bg-elevated: #f1eada;
+  --bg-glass: rgba(251, 247, 239, 0.95);
+  --glass-blur: 16px;
+
+  /* Neutral 2 — deep teal ink & dark sections */
+  --bg-deep: #0a2e2f;
+  --text-ink: #0f3d3e;
+  --text-muted: #56706f;
+  --border-hairline: #e9e1cf;
+
+  /* THE highlight — coral orange */
+  --accent-coral: #ff6b4a;
+  --accent-coral-deep: #e8532f;
+  --accent-peach: #ff9e7a;
+  --accent-tint: #fff1ea;
+  --accent-tintline: #ffd4c4;
+
+  /* Structural secondary (teal family, used sparingly) */
+  --accent-teal: #147d7c;
+}
+
+@theme inline {
+  --color-canvas: var(--bg-canvas);
+  --color-soft: var(--bg-soft);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-deep: var(--bg-deep);
+  --color-accent: var(--accent-coral);
+  --color-coral-deep: var(--accent-coral-deep);
+  --color-peach: var(--accent-peach);
+  --color-tint: var(--accent-tint);
+  --color-tintline: var(--accent-tintline);
+  --color-teal: var(--accent-teal);
+  --color-live: var(--accent-coral);
+  --color-ink: var(--text-ink);
+  --color-muted: var(--text-muted);
+  --color-hairline: var(--border-hairline);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+
+  --shadow-card: 0 1px 2px rgb(15 61 62 / 0.05),
+    0 12px 32px -16px rgb(15 61 62 / 0.16);
+  --shadow-lift: 0 2px 4px rgb(15 61 62 / 0.06),
+    0 24px 48px -20px rgb(15 61 62 / 0.26);
+  --shadow-soft: 0 24px 80px -24px rgb(15 61 62 / 0.3);
+
+  --animate-marquee: marquee 38s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Frosted ivory glass (navbar, overlays) */
+@utility bg-glass {
+  background-color: var(--bg-glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+/* Coral → peach gradient text (the highlight, used sparingly) */
+@utility text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--accent-coral) 0%,
+    var(--accent-coral-deep) 45%,
+    var(--accent-peach) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Faint teal engineering grid for hero backgrounds */
+@utility grid-lines {
+  background-image: linear-gradient(
+      to right,
+      rgba(15, 61, 62, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(15, 61, 62, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg-canvas);
+    scrollbar-color: #cdc4ae var(--bg-soft);
+    scrollbar-width: thin;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--accent-coral);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-coral);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-soft);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cdc4ae;
+    border: 2px solid var(--bg-soft);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-coral);
+  }
+
+  /* Lenis smooth-scroll recommended styles */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Pause the client marquee while hovered (pointer devices only) */
+@media (hover: hover) {
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Process rail nodes ignite in coral when the GSAP fill passes them */
+.step-node.is-lit {
+  border-color: var(--accent-coral);
+  box-shadow: 0 0 0 4px rgba(255, 107, 74, 0.15);
+}
+.step-node.is-lit > span {
+  background: var(--accent-coral);
+  box-shadow: 0 0 10px rgba(255, 107, 74, 0.6);
+}
