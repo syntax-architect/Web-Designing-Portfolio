@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ArrowRight, Mail, Phone } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { CONTACT_EMAIL, NAV_LINKS } from '../lib/data';
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, NAV_LINKS } from '../lib/data';
 import { EASE } from '../lib/motion';
 import { useBooking } from './BookingModal';
 import { Magnetic } from './Magnetic';
@@ -193,15 +193,26 @@ export function Navbar() {
                 Book a Strategy Call
               </motion.button>
 
-              <motion.a
-                href={`mailto:${CONTACT_EMAIL}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.58, duration: 0.4 } }}
-                className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-hairline bg-surface py-3.5 text-sm font-medium text-ink"
-              >
-                <Mail className="h-4 w-4 text-accent" aria-hidden="true" />
-                {CONTACT_EMAIL}
-              </motion.a>
+              <div className="mt-4 grid gap-2.5">
+                <motion.a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { delay: 0.58, duration: 0.4 } }}
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-hairline bg-surface py-3.5 text-sm font-medium text-ink"
+                >
+                  <Mail className="h-4 w-4 text-accent" aria-hidden="true" />
+                  {CONTACT_EMAIL}
+                </motion.a>
+                <motion.a
+                  href={CONTACT_PHONE_HREF}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { delay: 0.62, duration: 0.4 } }}
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-hairline bg-surface py-3.5 text-sm font-medium text-ink"
+                >
+                  <Phone className="h-4 w-4 text-teal" aria-hidden="true" />
+                  {CONTACT_PHONE}
+                </motion.a>
+              </div>
             </div>
           </motion.div>
         )}

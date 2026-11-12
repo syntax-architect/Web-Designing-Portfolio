@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
-import { ArrowRight, Check, CheckCircle2, Copy, ShieldCheck, Timer } from 'lucide-react';
+import { ArrowRight, Check, CheckCircle2, Copy, Mail, Phone, ShieldCheck, Timer } from 'lucide-react';
 import { useState } from 'react';
-import { CONTACT_EMAIL } from '../lib/data';
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from '../lib/data';
 import { EASE, viewportOnce } from '../lib/motion';
 import { DotPattern } from './magicui/dot-pattern';
 import { SectionHeading, SectionShell } from './Section';
@@ -67,15 +67,15 @@ export function LeadForm() {
   const [brief, setBrief] = useState('');
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copiedField, setCopiedField] = useState<'email' | 'phone' | null>(null);
 
-  const copyEmail = async () => {
+  const copyContact = async (field: 'email' | 'phone', value: string) => {
     try {
-      await navigator.clipboard.writeText(CONTACT_EMAIL);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2200);
+      await navigator.clipboard.writeText(value);
+      setCopiedField(field);
+      window.setTimeout(() => setCopiedField(null), 2200);
     } catch {
-      setCopied(false);
+      setCopiedField(null);
     }
   };
 
@@ -173,36 +173,62 @@ export function LeadForm() {
             </ol>
           </div>
 
-          <div className="relative mt-8 rounded-2xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55">
-              Studio Email
-            </p>
-            <div className="mt-2 flex items-center justify-between gap-2">
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="truncate font-mono text-xs font-medium text-white transition-colors hover:text-accent sm:text-[13px]"
-              >
-                {CONTACT_EMAIL}
-              </a>
-              <button
-                type="button"
-                onClick={copyEmail}
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white transition-colors hover:border-accent hover:bg-accent"
-                aria-label="Copy studio email address"
-              >
-                {copied ? (
-                  <>
-                    <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                    Copied
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-3.5 w-3.5" aria-hidden="true" />
-                    Copy
-                  </>
-                )}
-              </button>
-            </div>
+          <div className="relative mt-8 space-y-3.5 rounded-2xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm">
+            {[
+              {
+                key: 'email' as const,
+                title: 'Studio Email',
+                display: CONTACT_EMAIL,
+                copyValue: CONTACT_EMAIL,
+                href: `mailto:${CONTACT_EMAIL}`,
+                ariaLabel: 'Copy studio email address',
+                Icon: Mail,
+                iconClass: 'text-accent',
+              },
+              {
+                key: 'phone' as const,
+                title: 'Direct Phone',
+                display: CONTACT_PHONE,
+                copyValue: CONTACT_PHONE,
+                href: CONTACT_PHONE_HREF,
+                ariaLabel: 'Copy direct phone number',
+                Icon: Phone,
+                iconClass: 'text-teal-light',
+              },
+            ].map(({ key, title, display, copyValue, href, ariaLabel, Icon, iconClass }, idx) => (
+              <div key={key} className={idx > 0 ? 'border-t border-white/10 pt-3.5' : undefined}>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                  {title}
+                </p>
+                <div className="mt-1.5 flex items-center justify-between gap-2">
+                  <a
+                    href={href}
+                    className="inline-flex min-w-0 items-center gap-2 truncate font-mono text-xs font-medium text-white transition-colors hover:text-accent sm:text-[13px]"
+                  >
+                    <Icon className={`h-3.5 w-3.5 shrink-0 ${iconClass}`} aria-hidden="true" />
+                    <span className="truncate">{display}</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => copyContact(key, copyValue)}
+                    className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white transition-colors hover:border-accent hover:bg-accent"
+                    aria-label={ariaLabel}
+                  >
+                    {copiedField === key ? (
+                      <>
+                        <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                        Copied
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+                        Copy
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </aside>
 

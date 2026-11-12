@@ -1,8 +1,15 @@
 import { motion } from 'motion/react';
-import { ArrowUpRight, Code2, Quote, TrendingUp } from 'lucide-react';
+import { ArrowUpRight, Code2, Mail, Phone, Quote, TrendingUp } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import agnishImg from '../assets/agnish.png';
 import ayushImg from '../assets/ayush.png';
+import {
+  AGNISH_GITHUB_HANDLE,
+  AGNISH_GITHUB_URL,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_HREF,
+} from '../lib/data';
 import { fadeUp, stagger, viewportOnce } from '../lib/motion';
 import { useBooking } from './BookingModal';
 import { BorderBeam } from './magicui/border-beam';
@@ -31,6 +38,13 @@ interface Founder {
   glow: string;
   badgeIcon: 'code' | 'growth';
   socials: FounderSocial[];
+  direct?: {
+    githubLabel?: string;
+    githubHref?: string;
+    email?: string;
+    phone?: string;
+    phoneHref?: string;
+  };
 }
 
 const FOUNDERS: Founder[] = [
@@ -52,9 +66,16 @@ const FOUNDERS: Founder[] = [
     glow: 'rgba(20, 125, 124, 0.22)',
     badgeIcon: 'code',
     socials: [
-      { label: 'Agnish on GitHub', href: 'https://github.com/syntax-architect', icon: 'github' },
+      { label: 'Agnish on GitHub (@syntax-architect)', href: AGNISH_GITHUB_URL, icon: 'github' },
       { label: 'Agnish on LinkedIn', href: 'https://linkedin.com', icon: 'linkedin' },
     ],
+    direct: {
+      githubLabel: `@${AGNISH_GITHUB_HANDLE}`,
+      githubHref: AGNISH_GITHUB_URL,
+      email: CONTACT_EMAIL,
+      phone: CONTACT_PHONE,
+      phoneHref: CONTACT_PHONE_HREF,
+    },
   },
   {
     indexLabel: '02 · GROWTH',
@@ -244,6 +265,40 @@ function FounderCard({
                 </motion.li>
               ))}
             </ul>
+
+            {founder.direct && (
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                {founder.direct.githubHref && founder.direct.githubLabel && (
+                  <a
+                    href={founder.direct.githubHref}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 font-mono text-[11px] font-medium text-ink transition-colors hover:border-teal/50 hover:text-teal"
+                  >
+                    <GithubIcon className="h-3.5 w-3.5 text-teal" />
+                    <span>{founder.direct.githubLabel}</span>
+                  </a>
+                )}
+                {founder.direct.phone && founder.direct.phoneHref && (
+                  <a
+                    href={founder.direct.phoneHref}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 font-mono text-[11px] font-medium text-ink transition-colors hover:border-accent/50 hover:text-accent"
+                  >
+                    <Phone className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                    <span>{founder.direct.phone}</span>
+                  </a>
+                )}
+                {founder.direct.email && (
+                  <a
+                    href={`mailto:${founder.direct.email}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 font-mono text-[11px] font-medium text-ink transition-colors hover:border-accent/50 hover:text-accent"
+                  >
+                    <Mail className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                    <span>{founder.direct.email}</span>
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="mt-6 flex items-center justify-between gap-3 border-t border-hairline pt-4">

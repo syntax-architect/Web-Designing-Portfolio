@@ -1,7 +1,15 @@
 import { motion } from 'motion/react';
-import { ArrowUp, ArrowUpRight, Check, Copy, Mail } from 'lucide-react';
+import { ArrowUp, ArrowUpRight, Check, Copy, Mail, Phone } from 'lucide-react';
 import { useEffect, useState, type CSSProperties } from 'react';
-import { CONTACT_EMAIL, NAV_LINKS, SERVICES } from '../lib/data';
+import {
+  AGNISH_GITHUB_HANDLE,
+  AGNISH_GITHUB_URL,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_HREF,
+  NAV_LINKS,
+  SERVICES,
+} from '../lib/data';
 import { EASE, viewportOnce } from '../lib/motion';
 import { useBooking } from './BookingModal';
 import { BorderBeam } from './magicui/border-beam';
@@ -42,7 +50,7 @@ function StudioClock() {
 }
 
 const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com/syntax-architect', Icon: GithubIcon },
+  { label: `GitHub (@${AGNISH_GITHUB_HANDLE})`, href: AGNISH_GITHUB_URL, Icon: GithubIcon },
   { label: 'LinkedIn', href: 'https://linkedin.com', Icon: LinkedinIcon },
   { label: 'X (Twitter)', href: 'https://x.com', Icon: XIcon },
 ];
@@ -275,14 +283,32 @@ export function Footer() {
               Direct Desk
             </h3>
             <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="flex items-center gap-2 truncate text-sm font-medium text-white transition-colors hover:text-accent"
-              >
-                <Mail className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-                <span className="truncate">{CONTACT_EMAIL}</span>
-              </a>
-              <p className="mt-2.5 text-xs leading-relaxed text-white/55">
+              <div className="space-y-2.5">
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="flex items-center gap-2 truncate text-sm font-medium text-white transition-colors hover:text-accent"
+                >
+                  <Mail className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                  <span className="truncate">{CONTACT_EMAIL}</span>
+                </a>
+                <a
+                  href={CONTACT_PHONE_HREF}
+                  className="flex items-center gap-2 truncate text-sm font-medium text-white transition-colors hover:text-accent"
+                >
+                  <Phone className="h-4 w-4 shrink-0 text-teal-light" aria-hidden="true" />
+                  <span>{CONTACT_PHONE}</span>
+                </a>
+                <a
+                  href={AGNISH_GITHUB_URL}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="flex items-center gap-2 truncate text-xs font-medium text-white/80 transition-colors hover:text-accent"
+                >
+                  <GithubIcon className="h-3.5 w-3.5 shrink-0 text-white/65" />
+                  <span className="truncate">github.com/{AGNISH_GITHUB_HANDLE}</span>
+                </a>
+              </div>
+              <p className="mt-3 text-xs leading-relaxed text-white/55">
                 Working with startups and founders across India and worldwide. Typical reply within
                 24 hours.
               </p>

@@ -284,3 +284,7 @@ export const FAQS: FaqEntry[] = [
 ];
 
 export const CONTACT_EMAIL = 'agnighosh207@gmail.com';
+export const CONTACT_PHONE = '+91 96744 29451';
+export const CONTACT_PHONE_HREF = 'tel:+919674429451';
+export const AGNISH_GITHUB_URL = 'https://github.com/syntax-architect';
+export const AGNISH_GITHUB_HANDLE = 'syntax-architect';

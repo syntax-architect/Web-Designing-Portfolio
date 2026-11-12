@@ -16,7 +16,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { CONTACT_EMAIL } from '../lib/data';
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from '../lib/data';
 import { EASE } from '../lib/motion';
 import { useLenis } from './SmoothScrollProvider';
 
@@ -305,7 +305,14 @@ function Modal({ onClose }: { onClose: () => void }) {
               </h4>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted">
                 Send the pre-filled email to <span className="font-medium text-ink">{CONTACT_EMAIL}</span>{' '}
-                and Agnish or Ayush will confirm your Google Meet link.
+                or call{' '}
+                <a
+                  href={CONTACT_PHONE_HREF}
+                  className="font-medium text-ink underline decoration-hairline underline-offset-4 hover:text-accent"
+                >
+                  {CONTACT_PHONE}
+                </a>{' '}
+                to confirm your Google Meet link with Agnish or Ayush.
               </p>
               <div className="mt-6 flex flex-col justify-center gap-2.5 sm:flex-row">
                 <a
