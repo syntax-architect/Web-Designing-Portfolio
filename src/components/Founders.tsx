@@ -97,83 +97,95 @@ function FounderCard({ founder, index }: { founder: Founder; index: number }) {
     <motion.article
       variants={fadeUp}
       custom={index}
-      className="group relative grid overflow-hidden rounded-3xl border border-hairline bg-surface shadow-card transition-all duration-500 hover:-translate-y-1 hover:border-tintline hover:shadow-lift sm:grid-cols-[220px_1fr]"
+      className="group relative flex flex-col overflow-hidden rounded-3xl border border-hairline bg-surface shadow-card transition-all duration-500 hover:-translate-y-1 hover:border-tintline hover:shadow-lift"
     >
-      {/* Portrait studio stage — blends cutout seamlessly into warm ivory + brand aura */}
-      <div className="relative flex h-64 items-end justify-center overflow-hidden border-b border-hairline bg-gradient-to-b from-soft via-elevated/60 to-soft sm:h-auto sm:min-h-[340px] sm:border-b-0 sm:border-r">
-        <div aria-hidden="true" className="grid-lines absolute inset-0 opacity-60" />
+      {/* Soft hover corner glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+        style={{ background: `radial-gradient(closest-side, ${founder.glow}, transparent)` }}
+      />
+
+      {/* Top header: 1:1 studio portrait + identity */}
+      <div className="relative flex flex-col gap-5 border-b border-hairline bg-soft/45 p-6 sm:flex-row sm:items-center md:p-7">
+        {/* 1:1 deep-teal studio frame matching the portrait's cool/warm rim lighting */}
         <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 transition-transform duration-700 group-hover:scale-110"
+          className="relative h-40 w-40 shrink-0 overflow-hidden rounded-2xl shadow-lift ring-1 ring-ink/15 sm:h-44 sm:w-44"
           style={{
-            background: `radial-gradient(circle at 50% 62%, ${founder.glow} 0%, transparent 72%)`,
+            background:
+              'radial-gradient(circle at 82% 24%, rgba(255, 107, 74, 0.28) 0%, transparent 52%), radial-gradient(circle at 18% 30%, rgba(20, 125, 124, 0.45) 0%, transparent 58%), linear-gradient(155deg, #072223 0%, #0F3D3E 58%, #145353 100%)',
           }}
-        />
+        >
+          <img
+            src={founder.image}
+            alt={`${founder.name} — ${founder.role}`}
+            width={640}
+            height={640}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#072223]/55 to-transparent"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10"
+          />
+        </div>
 
-        <span className="absolute left-4 top-4 z-10 rounded-full border border-hairline bg-surface/90 px-2.5 py-1 font-mono text-[10px] font-medium tracking-[0.14em] text-ink/75 backdrop-blur-sm">
-          {founder.indexLabel}
-        </span>
-
-        <img
-          src={founder.image}
-          alt={`${founder.name} — ${founder.role}`}
-          width={640}
-          height={640}
-          loading="lazy"
-          decoding="async"
-          className="relative z-10 h-[92%] w-full object-contain object-bottom drop-shadow-[0_12px_22px_rgba(15,61,62,0.16)] transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-        />
-      </div>
-
-      {/* Details column */}
-      <div className="relative flex flex-col justify-between p-7 md:p-8">
-        {/* Soft hover corner glow */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
-          style={{ background: `radial-gradient(closest-side, ${founder.glow}, transparent)` }}
-        />
-
-        <div className="relative">
-          <div className="flex items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-soft px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/80">
+        {/* Name, role, badge & socials */}
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/85 shadow-[0_1px_2px_rgb(15_61_62/0.04)]">
               <BadgeIcon className="h-3.5 w-3.5" style={{ color: founder.accent }} aria-hidden="true" />
               {founder.roleTag}
             </span>
-            <div className="flex items-center gap-2">
-              {founder.socials.map((s) => (
-                <SocialBadge key={s.label} social={s} />
-              ))}
-            </div>
+            <span className="font-mono text-[10px] font-medium tracking-[0.16em] text-muted">
+              {founder.indexLabel}
+            </span>
           </div>
 
-          <h3 className="mt-5 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl">
+          <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl">
             {founder.name}
           </h3>
-          <p className="mt-1 text-[13px] font-medium text-muted">{founder.role}</p>
-          <p className="mt-4 text-sm leading-relaxed text-muted">{founder.bio}</p>
+          <p className="mt-1 text-[13px] font-medium leading-snug text-muted">{founder.role}</p>
+
+          <div className="mt-4 flex items-center gap-2">
+            {founder.socials.map((s) => (
+              <SocialBadge key={s.label} social={s} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom body: bio, full-width 2x2 focus grid & ownership footer */}
+      <div className="relative flex flex-1 flex-col justify-between p-6 md:p-7">
+        <div>
+          <p className="text-sm leading-relaxed text-muted">{founder.bio}</p>
 
           <ul
-            className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2"
+            className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2"
             aria-label={`${founder.name}'s focus areas`}
           >
             {founder.focus.map((item) => (
               <li
                 key={item}
-                className="flex items-center gap-2 rounded-xl border border-hairline bg-soft/70 px-3 py-2 text-[11.5px] font-medium text-ink/85"
+                className="flex items-center gap-2.5 rounded-xl border border-hairline bg-soft/75 px-3.5 py-2.5 text-xs font-medium text-ink/85"
               >
                 <span
                   aria-hidden="true"
                   className="h-1.5 w-1.5 shrink-0 rounded-full"
                   style={{ backgroundColor: founder.accent }}
                 />
-                <span className="truncate">{item}</span>
+                <span>{item}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="relative mt-6 flex items-center gap-2 border-t border-hairline pt-4 text-[11px] font-medium text-muted">
+        <div className="mt-6 flex items-center gap-2 border-t border-hairline pt-4 text-xs font-medium text-muted">
           <span
             aria-hidden="true"
             className="h-2 w-2 rounded-full"
